@@ -1,6 +1,7 @@
 # Storyblok-cypress-tests
 
-This repo contains three UI e2e test scripts for Assets tab on the Storyblok website
+This repo contains three UI e2e test scripts for Assets tab on the Storyblok website.
+
 These test cases were selected from a list of predetermined test cases linked [here](https://docs.google.com/spreadsheets/d/1pQH-Can5UFLngKuS90MRzOTei8llqIv7wCGqMmK6vww/edit#gid=0)
 
 ## Run tests locally
