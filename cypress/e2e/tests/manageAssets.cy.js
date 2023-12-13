@@ -29,7 +29,7 @@ describe("Manage Assets tab e2e tests", () => {
       dashboardPage.getAssetsTab().click();
     });
 
-    it.skip("should verify that user can register a public asset", () => {
+    it("should verify that user can register a public asset", () => {
       //upload file
       assetsPage.getUploadButton().click();
       cy.get("input#file").selectFile("cypress/fixtures/downloadcat.jpeg", {
@@ -63,7 +63,7 @@ describe("Manage Assets tab e2e tests", () => {
     it("should verify that user can register a private asset", () => {
       //upload file
       assetsPage.getUploadButton().click();
-      cy.get("input#file").selectFile("cypress/fixtures/downloaddog.jpeg", {
+      cy.get("input#file").selectFile("cypress/fixtures/downloadcat.jpeg", {
         force: true,
       });
       //name asset
@@ -94,7 +94,9 @@ describe("Manage Assets tab e2e tests", () => {
 
     it("should verify that user can delete an asset", () => {
       //select asset
-      assetsPage.getAssetItem(1).click();
+      assetsPage.getAssetItem(1).within(() => {
+        cy.get('.assets-list-item-preview').click();
+      });
       //click delete icon
       assetsPage.getDeleteAssetButton().click();
       //verify delete modal is visibe
@@ -104,8 +106,9 @@ describe("Manage Assets tab e2e tests", () => {
       //verify that notifcation is displayed
       assetsPage
         .getNotification()
-        .should("be.visble")
-        .and("contain", "Success");
+        .should("be.visible")
+        .and('contain', "Success")
+        .and('contain', "The asset was successfully deleted");
     });
   });
 });

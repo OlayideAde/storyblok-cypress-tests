@@ -32,6 +32,6 @@ export class AssetsPage {
     }
 
     getNotification(){
-        return cy.get('.custom_notification')
+        return cy.get('.custom-notification')
     }
 }
