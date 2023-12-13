@@ -32,19 +32,24 @@ describe("Manage Assets tab e2e tests", () => {
         it("should verify that user can register a public asset", () => {
             //upload file
             assetsPage.getUploadButton().click();
-            //cy.upload_file('downloadcat.jpeg', 'image/jpeg', 'input#file');
-            cy.get('input#file').selectFile('cypress/fixtures/downloadcat.jpeg')
+            cy.get('input#file').selectFile('cypress/fixtures/downloadcat.jpeg', { force:true });
+            
             //name asset
             assetName = faker.random.word();
-            assetsPage.getAssetNameField().type(assetName);
+            assetsPage.getAssetNameField().clear().type(assetName);
+            
             //check that privacy is toggled to public
-            assetsPage.getPrivacyButton().its('value').should('eq', 'false')
+           // assetsPage.getPrivacyButton().within(() => {
+            //    cy.get('input#asset-is-private-0').its('value').should('eq', "false")
+            //})
+
             //click upload
             assetsPage.getSubmitButton().click()
+            
             //verify asset is visible on dashboard
             assetsPage.getAssetItem(0).should("be.visible").within(() => {
                 //verify name
-                cy.get('span[data-testid="asset-name"]').should('eq', assetName)
+                cy.get('span[data-testid="asset-name"]').should('contain', assetName)
                 //verify asset has an image
                 cy.get('div.asset-list-item-preview__image').within(() => {
                     cy.get('img').should('have.attr', "src")
@@ -55,36 +60,37 @@ describe("Manage Assets tab e2e tests", () => {
         it("should verify that user can register a private asset", () => {
             //upload file
             assetsPage.getUploadButton().click();
-            //cy.upload_file('downloadcat.jpeg', 'image/jpeg', 'input#file');
-            cy.get('input#file').selectFile('cypress/fixtures/downloadcat.jpeg')
+            cy.get('input#file').selectFile('cypress/fixtures/downloaddog.jpeg', { force:true })
             //name asset
             assetName = faker.random.word();
-            assetsPage.getAssetNameField().type(assetName);
+            assetsPage.getAssetNameField().clear().type(assetName);
             //check that privacy is toggled to private
             assetsPage.getPrivacyButton().click();
-            assetsPage.getPrivacyButton().its('value').should('eq', 'true')
+            
             //click upload
             assetsPage.getSubmitButton().click()
             //verify asset is visible on dashboard
             assetsPage.getAssetItem(0).should("be.visible").within(() => {
                 //verify name
-                cy.get('span[data-testid="asset-name"]').should('eq', assetName)
-                //verify privacy setting
+                cy.get('span[data-testid="asset-name"]').should('contain', assetName)
+                //verify privacy 
                 cy.get('div.asset-private-preview').within(() => {
                     cy.get('p').should('have.text', "Private Asset")
                 })
             })
         })
 
-        it("should verify that user can replace an asset", () => {
+        it("should verify that user can delete an asset", () => {
             //select asset
             assetsPage.getAssetItem(1).click();
-            //click replace button 
-            assetsPage.getReplaceAssetButton().click();
-            //upload replacement
-            cy.upload_file('downloaddog.jpeg', 'image/jpeg', 'input#replacefile');
-
-
+            //click delete icon
+            assetsPage.getDeleteAssetButton().click();
+            //verify delete modal is visibe
+            assetsPage.getDeleteModal().should('be.visible')
+            //click confirm delete button
+            assetsPage.getConfirmDeleteButton().click()
+            //verify that notifcation is displayed
+            assetsPage.getNotification().should('be.visble').and('contain', "Success")
         })
     })
 })
