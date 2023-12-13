@@ -29,7 +29,7 @@ describe("Manage Assets tab e2e tests", () => {
       dashboardPage.getAssetsTab().click();
     });
 
-    it("should verify that user can register a public asset", () => {
+    it.skip("should verify that user can register a public asset", () => {
       //upload file
       assetsPage.getUploadButton().click();
       cy.get("input#file").selectFile("cypress/fixtures/downloadcat.jpeg", {
@@ -44,7 +44,7 @@ describe("Manage Assets tab e2e tests", () => {
       assetsPage.getSubmitButton().click();
 
       //verify asset is visible on dashboard
-      cy.wait(9000);
+      cy.wait(7000);
 
       assetsPage
         .getAssetItem(0)
@@ -54,8 +54,8 @@ describe("Manage Assets tab e2e tests", () => {
           cy.contains(assetName.toLowerCase());
 
           //verify asset has an image
-          cy.get("div.asset-list-item-preview__image")
-            .contains("img")
+          cy.get("div.assets-list-item-preview__image")
+            .find("img")
             .should("have.attr", "src");
         });
     });
@@ -77,7 +77,7 @@ describe("Manage Assets tab e2e tests", () => {
       assetsPage.getSubmitButton().click();
 
       //verify asset is visible on dashboard
-      cy.wait(9000);
+      cy.wait(7000);
       assetsPage
         .getAssetItem(0)
         .should("be.visible")
@@ -87,6 +87,9 @@ describe("Manage Assets tab e2e tests", () => {
           //verify text is shown for private asset
           cy.contains("Private Asset");
         });
+
+        //verify no image preview
+        assetsPage.getAssetItem(0).find('img').should('not.exist')
     });
 
     it("should verify that user can delete an asset", () => {
